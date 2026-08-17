@@ -7,12 +7,21 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Docs reorganized into calm manuals: design guide, user manual, admin guide
+- SSH platform guides merged into `docs/how-to/ssh.md`
+- Tailscale guide moved to `docs/how-to/remote-access.md`
+- Testing matrix moved to `docs/reference/testing.md`
+- Root `START_HERE.md` is now a short pointer to the user manual
+
 ### Planned
 
 - Broader disposable VM matrix (24.04/26.04 × local-lan/tailnet/cloud)
 - End-to-end backup/restore drill notes from public testers
 - Optional release artifact checksums
 - `tinlobster hatch` and public blueprints (post-0.1)
+- Glossary + bootstrap "what just happened?" recap
 
 ## [0.1.0-rc.1] - 2026-08-16
 
