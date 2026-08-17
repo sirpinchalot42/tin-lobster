@@ -123,7 +123,7 @@ Open work:
 - [x] Prefer git-first install path (no curl one-liner as primary docs).
 - [x] Add practical secrets layout + `secrets-check` helper.
 - [x] Add `SECURITY.md` and secrets management guide.
-- [x] Public GitHub clone URL set for PracticalAiClub/tin-lobster (change if org/repo differs).
+- [x] Public GitHub clone URL set for sirpinchalot42/tin-lobster (change if org/repo differs).
 - [ ] Add checksum/signature verification for release artifacts (optional tarball).
 - [ ] Add release tags on the public GitHub repo (`v0.1.0-rc.1`, then `v0.1.0`).
 - [x] Add a contribution guide (`CONTRIBUTING.md`).

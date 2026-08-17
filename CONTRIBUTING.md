@@ -26,7 +26,7 @@ where the operator should put the real value.
 ## Development basics
 
 ```bash
-git clone https://github.com/PracticalAiClub/tin-lobster.git
+git clone https://github.com/sirpinchalot42/tin-lobster.git
 cd tin-lobster
 
 # Syntax / help smoke (safe on any machine)

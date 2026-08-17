@@ -44,5 +44,5 @@ First public release candidate. Clean public history (no private forge history).
 - Prefer the tagged release over cloning an arbitrary commit when teaching.
 - Report security issues privately (see `SECURITY.md`).
 
-[Unreleased]: https://github.com/PracticalAiClub/tin-lobster/compare/v0.1.0-rc.1...HEAD
-[0.1.0-rc.1]: https://github.com/PracticalAiClub/tin-lobster/releases/tag/v0.1.0-rc.1
+[Unreleased]: https://github.com/sirpinchalot42/tin-lobster/compare/v0.1.0-rc.1...HEAD
+[0.1.0-rc.1]: https://github.com/sirpinchalot42/tin-lobster/releases/tag/v0.1.0-rc.1

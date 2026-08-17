@@ -58,7 +58,7 @@ On the fresh Ubuntu machine:
 # On a brand-new Ubuntu minimal host, install git once if needed:
 # sudo apt-get update && sudo apt-get install -y git
 
-git clone https://github.com/PracticalAiClub/tin-lobster.git tin-lobster
+git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
 cd tin-lobster
 
 # Tin Lobster host wizard (recommended)

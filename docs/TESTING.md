@@ -31,7 +31,7 @@ scripts/restore-tin-lobster.sh --help
 On a disposable VM (git-first):
 
 ```bash
-git clone https://github.com/PracticalAiClub/tin-lobster.git tin-lobster
+git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
 cd tin-lobster
 
 sudo bash bootstrap-tin-lobster.sh \

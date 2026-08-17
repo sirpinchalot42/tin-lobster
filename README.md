@@ -72,7 +72,7 @@ Clone the product, then run the setup wizard. Most people only need this:
 
 ```bash
 # 1) Get Tin Lobster
-git clone https://github.com/PracticalAiClub/tin-lobster.git tin-lobster
+git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
 cd tin-lobster
 
 # 2) Optional: peek at the script
@@ -131,11 +131,11 @@ sudo bash bootstrap-tin-lobster.sh \
 Public clone:
 
 ```bash
-git clone https://github.com/PracticalAiClub/tin-lobster.git
+git clone https://github.com/sirpinchalot42/tin-lobster.git
 cd tin-lobster
 ```
 
-Tagged releases: `https://github.com/PracticalAiClub/tin-lobster/releases`
+Tagged releases: `https://github.com/sirpinchalot42/tin-lobster/releases`
 
 ## Hypervisor Network Setup
 
