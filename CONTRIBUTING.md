@@ -35,7 +35,7 @@ bash bootstrap-tin-lobster.sh --help
 for s in scripts/*.sh; do bash -n "$s"; done
 ```
 
-Test host changes on a **disposable** Ubuntu VM. See `docs/TESTING.md`.
+Test host changes on a **disposable** Ubuntu VM. See `docs/reference/testing.md`.
 
 ## Pull requests
 

@@ -96,23 +96,18 @@ Open work:
 - [ ] Replace removed private files with generic examples or templates.
 - [x] Public GitHub export uses a clean orphan history (private forge history stays private).
 
-### 5. Admin Manual
+### 5. Docs manuals
 
-Turn the existing Markdown docs into a polished admin manual that teaches the
-full stack without hiding the important parts.
+Docs are organized into design / user / admin manuals (calm titles).
 
 Open work:
 
-- [ ] Create a generic Tin Lobster admin manual outline in this repo.
-- [ ] Add a glossary for SSH, keys, firewall, gateway, Tailscale, repo, branch,
-      commit, backup, restore, and profile.
-- [ ] Add "what just happened?" recap after bootstrap.
-- [ ] Add first-message walkthrough.
-- [ ] Add day-two maintenance checklist.
-- [ ] Add backup/restore drill checklist.
-- [ ] Add common failure recovery paths.
-- [ ] Add workshop facilitator run sheet.
-- [ ] Decide how to publish PDF/EPUB/website versions later.
+- [x] Collapse sprawl into design-guide, user-manual, admin-guide.
+- [ ] Add a short glossary (SSH, keys, firewall, gateway, Tailscale, backup).
+- [ ] Add "what just happened?" recap after bootstrap in user manual.
+- [ ] Expand backup/restore drill checklist.
+- [ ] Workshop facilitator run sheet (optional).
+- [ ] PDF/EPUB/website later.
 
 ### 6. Public Release Hygiene
 

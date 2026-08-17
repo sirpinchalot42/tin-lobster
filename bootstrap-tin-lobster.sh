@@ -1323,7 +1323,7 @@ copy_repo_to_bot() {
     fi
   done
 
-  for file in README.md START_HERE.md TODO.md SECURITY.md LICENSE; do
+  for file in README.md START_HERE.md TODO.md SECURITY.md LICENSE CHANGELOG.md CONTRIBUTING.md VERSION; do
     if [[ -f "${repo_root}/${file}" ]]; then
       cp "${repo_root}/${file}" "${dest}/"
       chown "$BOT_USER:$BOT_USER" "${dest}/${file}"
@@ -1395,7 +1395,7 @@ Definition of done (day one):
    openclaw backup verify <backup-file>
 
 Reference files copied to ~${BOT_USER}/tin-lobster/:
-   ~/tin-lobster/docs/        — guides, security model, secrets management
+   ~/tin-lobster/docs/        — design guide, user manual, admin guide
    ~/tin-lobster/scripts/     — validate, secrets-check, backup, restore helpers
    ~/tin-lobster/templates/   — identity starter SOUL.md files (not full blueprints)
 
@@ -1422,7 +1422,8 @@ Remaining operator work:
 - Add your SSH public key:  ssh-copy-id ${ADMIN_USER:-<your-user>}@<this-host>
 - After key login works, re-run with --harden-ssh to disable password SSH
 - If Tailscale installed: sudo tailscale up
-- Read secrets guidance: ~/tin-lobster/docs/SECRETS_MANAGEMENT.md
+- Read the user manual: ~/tin-lobster/docs/user-manual.md
+- Operator reference: ~/tin-lobster/docs/admin-guide.md
 - Optional baseline: sudo lynis audit system
 SUMMARY
 }

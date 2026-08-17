@@ -76,7 +76,7 @@ git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
 cd tin-lobster
 
 # 2) Optional: peek at the script
-less START_HERE.md
+less docs/user-manual.md
 
 # 3) Run the wizard (recommended for everyone)
 sudo bash bootstrap-tin-lobster.sh
@@ -126,7 +126,7 @@ sudo bash bootstrap-tin-lobster.sh \
 - You get docs, scripts, and templates with the installer
 - Bootstrap can copy the full reference tree to the bot user
 - Workshops can teach “read before run”
-- Releases can pin a tag (`v0.1.0`) instead of a floating raw file
+- Releases can pin a tag (`v0.1.0-rc.1`) instead of a floating raw file
 
 Public clone:
 
@@ -282,46 +282,23 @@ By default, the bootstrap prints a preflight summary and asks you to type
 `TIN LOBSTER` before changing the host. Use `--yes` only for reviewed scripted
 installs.
 
-## Docs Map
+## Docs
 
-Start here:
+| Doc | What it is |
+|-----|------------|
+| [docs/design-guide.md](docs/design-guide.md) | Big picture (short) |
+| [docs/user-manual.md](docs/user-manual.md) | Install + everyday use |
+| [docs/admin-guide.md](docs/admin-guide.md) | Operator manual / troubleshooting |
+| [docs/README.md](docs/README.md) | Full docs index |
+| [SECURITY.md](SECURITY.md) | Security policy |
+| [CHANGELOG.md](CHANGELOG.md) | Releases |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to help |
 
-- `START_HERE.md` — beginner path from fresh Ubuntu to first bot message
-- `SECURITY.md` — project security policy
-- `docs/USER_GUIDE.md` — field manual index
-- `docs/THE_COMPLETE_STACK.md` — full stack picture
-- `docs/SECRETS_MANAGEMENT.md` — practical secrets layout and leak checks
+How-tos: [SSH](docs/how-to/ssh.md) · [Remote access](docs/how-to/remote-access.md)
 
-Security and access:
+Identity starters live in `templates/`.
 
-- `docs/SECURITY_MODEL.md`
-- `docs/SECURITY_FOR_NORMAL_PEOPLE.md`
-- `docs/BOT_PERMISSIONS.md`
-- `docs/SSH_FROM_WINDOWS.md` / `SSH_FROM_MAC.md` / `SSH_FROM_ANDROID.md`
-- `docs/TAILSCALE_REMOTE_ACCESS.md`
-
-Day two and recovery:
-
-- `docs/DAY_TWO_OPERATIONS.md`
-- `docs/BACKUP_RESTORE.md`
-- `docs/TROUBLESHOOTING.md`
-- `docs/TESTING.md`
-
-Identity starters (not full blueprints):
-
-- `templates/SOUL.md`
-- `templates/personal-helper.SOUL.md`
-- `templates/coding-project-helper.SOUL.md`
-- `templates/club-demo-bot.SOUL.md`
-- `templates/business-assistant.SOUL.md`
-
-Roadmap / project:
-
-- `TODO.md` — hatch, blueprints, and later product work
-- `CHANGELOG.md` — release history
-- `CONTRIBUTING.md` — how to help safely
-- `VERSION` — current release candidate label
-- `LICENSE` — MIT
+Roadmap: [TODO.md](TODO.md) · version: [VERSION](VERSION)
 
 ## Project Direction
 

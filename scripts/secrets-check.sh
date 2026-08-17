@@ -180,7 +180,7 @@ scan_tree_for_patterns() {
       fi
       # documentation talking about secrets is fine if it only has placeholders;
       # still warn so operators double-check.
-      if [[ "$f" == *'/docs/'* || "$f" == *'SECRETS_MANAGEMENT.md' || "$f" == *'SECURITY'* ]]; then
+      if [[ "$f" == *'/docs/'* || "$f" == *'admin-guide.md' || "$f" == *'SECURITY'* ]]; then
         warn "pattern match in docs (verify placeholders only): ${f}"
         continue
       fi

@@ -1,4 +1,4 @@
-# Testing Tin Lobster
+# Testing
 
 Tin Lobster should not be recommended publicly until it passes disposable-host
 testing.
@@ -69,3 +69,8 @@ A release candidate should include:
 - no gateway token in shell history or command-line args
 - git-first install path works end-to-end (docs + scripts copied for bot user)
 - README quickstart reviewed by a non-expert
+
+## Related
+
+- [Admin guide](../admin-guide.md)
+- [Contributing](../../CONTRIBUTING.md)

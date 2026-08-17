@@ -44,6 +44,5 @@ If the issue is in OpenClaw upstream, report it to the OpenClaw project.
 
 See also:
 
-- `docs/SECURITY_MODEL.md`
-- `docs/SECURITY_FOR_NORMAL_PEOPLE.md`
-- `docs/SECRETS_MANAGEMENT.md`
+- `docs/admin-guide.md` (security model, habits, secrets)
+- `docs/design-guide.md` (big picture)

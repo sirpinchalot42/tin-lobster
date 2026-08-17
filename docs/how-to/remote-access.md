@@ -1,4 +1,6 @@
-# Tailscale Remote Access
+# Remote access
+
+Reach your lobster host safely from outside your home network.
 
 Tailscale gives your devices a private network so you can reach the bot without
 opening SSH to the public internet.
@@ -32,7 +34,6 @@ Tin Lobster can install Tailscale support during bootstrap:
 sudo bash bootstrap-tin-lobster.sh \
   --access-profile tailnet \
   --install-tailscale \
-  --force-fresh-host
 ```
 
 If Tailscale is already installed or you install it later, start it:
@@ -132,3 +133,9 @@ Before relying on remote access:
 3. Run `ssh openclaw`.
 4. Run `openclaw status`.
 5. Confirm you know your recovery path if SSH fails.
+
+
+## Related
+
+- [SSH how-to](ssh.md)
+- [Admin guide](../admin-guide.md)
