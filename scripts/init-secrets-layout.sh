@@ -101,7 +101,7 @@ ENV_EXAMPLE='# Copy to env.local and fill real values.
 # These are OPERATOR extras. Prefer OpenClaw wizard for channel/provider setup.
 #
 # Example placeholders only — replace before use:
-# OPENAI_API_KEY=replace-me
+# OPENAI_API_KEY=sk-replace-me
 # ANTHROPIC_API_KEY=replace-me
 # CUSTOM_TOOL_TOKEN=replace-me
 '

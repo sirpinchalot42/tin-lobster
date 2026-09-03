@@ -6,7 +6,7 @@ Tin Lobster documentation uses three main manuals plus small how-tos.
 |-----|---------|
 | [Design guide](design-guide.md) | Big picture (short) |
 | [User manual](user-manual.md) | Install, first message, everyday use |
-| [Admin guide](admin-guide.md) | Operator reference & troubleshooting |
+| [Admin guide](admin-guide.md) | Full stack operator reference (hypervisor → runtime), day-two, troubleshooting |
 
 ## How-tos
 
@@ -16,6 +16,7 @@ Tin Lobster documentation uses three main manuals plus small how-tos.
 ## Reference
 
 - [Testing](reference/testing.md) — release / disposable VM matrix
+- [Upstream watch](reference/upstream-watch.md) — stay aligned with OpenClaw docs/releases
 - [SECURITY.md](../SECURITY.md) — project security policy (root)
 - [README.md](../README.md) — product overview & bootstrap flags
 - [CHANGELOG.md](../CHANGELOG.md) — releases

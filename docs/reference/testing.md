@@ -69,6 +69,12 @@ A release candidate should include:
 - no gateway token in shell history or command-line args
 - git-first install path works end-to-end (docs + scripts copied for bot user)
 - README quickstart reviewed by a non-expert
+- checksum or signature verification on downloaded scripts (NodeSource, Tailscale) where practical
+- disposable Ubuntu 24.04 and 26.04 smoke tests for all access profiles
+- documented rollback/uninstall path
+- backup/restore walkthrough tested end-to-end
+- clear troubleshooting for SSH and firewall mistakes
+- hypervisor notes still accurate (bridged/external NIC; VirtualBox, Hyper-V, Proxmox, cloud)
 
 ## Related
 

@@ -1,10 +1,57 @@
 # Tin Lobster
 
-Tin Lobster builds a secure, generic Ubuntu shell for OpenClaw.
+Tin Lobster builds a secure, generic Ubuntu shell for [OpenClaw](https://docs.openclaw.ai/).
 
 It is meant for people who want a safer starting point than a hand-built VM,
 but who still want to choose their own agent identity, model provider, channels,
 plugins, and workflows during OpenClaw first-run setup.
+
+## What is OpenClaw?
+
+**OpenClaw** is open-source software for running **your own AI agent** on hardware
+you control — a laptop, mini PC, home lab VM, or small server. It is not just a
+chat box that answers questions. A Claw can:
+
+- talk with you over **Telegram, Discord, the browser Control UI**, and other channels
+- work with **files, terminals, tools, and automations** on the host (within the
+  permissions you grant)
+- keep **memory and skills** so work continues across days
+- grow from one useful workflow into something more capable — including optional
+  multiplayer / cloud-worker sessions when you are ready
+
+You pick the model provider (cloud APIs such as xAI/Grok, OpenAI, Anthropic, or
+local stacks such as Ollama / llama.cpp). OpenClaw stays open source: you are not
+locked into one vendor’s black-box assistant.
+
+Official docs: [docs.openclaw.ai](https://docs.openclaw.ai/) ·
+[Getting started](https://docs.openclaw.ai/start/getting-started)
+
+### Why people want it
+
+- **Own the agent** — your host, your rules, your data boundary
+- **Do real work** — not only chat; tools and automations on a machine you control
+- **Start simple, grow later** — one inbox watcher or personal bot first; shared
+  sessions and extra compute later if you need them
+- **Stay portable** — swap models/providers without throwing away the shell
+
+### Why Tin Lobster exists
+
+OpenClaw is powerful. A bare Ubuntu box + “install Node and hope” is easy to get
+wrong: wide-open SSH, secrets on the command line, gateway ports on the public
+internet, root-owned bot state, no doctor/audit habit.
+
+**Tin Lobster** is the **deployment shell** underneath OpenClaw — tin-soldier
+infrastructure as code for normal people and club workshops:
+
+- harden the **host** first (users, firewall, updates, bot isolation)
+- install a **supported Node + OpenClaw CLI** path
+- keep the **gateway closed by default**
+- leave **identity, models, channels, and secrets** to OpenClaw’s own onboard flow
+- teach **day-one hygiene**: `doctor`, `security audit`, backup, update
+
+We built it so Practical AI Club members (and anyone else) can stand up a real
+agent **safely and repeatably**, without turning every install into a custom
+homelab research project.
 
 ## What This Is
 
@@ -13,8 +60,8 @@ Tin Lobster is infrastructure under OpenClaw:
 - Ubuntu 24.04 LTS / 26.04 LTS baseline
 - non-root OpenClaw runtime user
 - `git` installed for day-two clones and updates
-- Node.js 22 from NodeSource
-- user-global OpenClaw CLI install
+- supported Node.js for OpenClaw (NodeSource **22.x** line; enforces OpenClaw floors: 22.22.3+ / 24.15+ / 25.9+ / 26+; Node 23 refused)
+- user-global OpenClaw CLI install (`openclaw@latest`, with npm lifecycle allow when required)
 - UFW firewall
 - fail2ban
 - unattended upgrades
@@ -23,6 +70,7 @@ Tin Lobster is infrastructure under OpenClaw:
 - optional Tailscale support
 - locked-down OpenClaw state permissions
 - practical secrets layout + leak-check helpers
+- docs aligned to OpenClaw doctor / security audit / `openclaw update`
 
 Tin Lobster intentionally does **not** choose:
 
@@ -48,7 +96,16 @@ Those choices happen after bootstrap with OpenClaw's normal setup flow.
 
 ## Security Stance
 
-Tin Lobster is secure-by-default, not magic.
+Tin Lobster is secure-by-default, not magic. It follows OpenClaw's
+**personal assistant** model: one trusted operator per gateway, loopback-first
+access, pairing/allowlists for messaging, and OpenClaw's own doctor/security
+audit tools after setup.
+
+Official OpenClaw references:
+
+- https://docs.openclaw.ai/gateway/security
+- https://docs.openclaw.ai/gateway/security/exposure-runbook
+- https://docs.openclaw.ai/install
 
 Defaults:
 
@@ -62,9 +119,13 @@ Defaults:
 - Pre-flight checks confirm internet access, disk space, and RAM before making
   any changes.
 - Operator secrets get a locked-down home layout and a leak-check script.
+- Day-one docs push `openclaw doctor` + `openclaw security audit` after onboard.
 
 Use it on a fresh Ubuntu VM, mini PC, or lab machine. Review the script before
 running it.
+
+Maintainers: keep install/security claims honest via
+`docs/reference/upstream-watch.md`.
 
 ## Quick Start (git-first)
 
@@ -72,7 +133,9 @@ Clone the product, then run the setup wizard. Most people only need this:
 
 ```bash
 # 1) Get Tin Lobster
+# Public GitHub export (when published):
 git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
+# Private Gitea remains the day-to-day source of truth for maintainers.
 cd tin-lobster
 
 # 2) Optional: peek at the script
@@ -210,13 +273,16 @@ openclaw onboard --install-daemon
 
 That guided flow configures auth/models (including local options like Ollama),
 gateway settings, optional channels, and can install the gateway service.
+Prefer **local / loopback** gateway mode on a Tin Lobster host.
 
 Confirm:
 
 ```bash
 openclaw gateway status
 openclaw status
-openclaw dashboard   # fastest first chat in the Control UI
+openclaw doctor          # repairs + health; use --fix only when you mean it
+openclaw security audit
+openclaw dashboard       # fastest first chat in the Control UI (chat-first in OpenClaw 2.x)
 ```
 
 If the daemon was not installed during onboarding:
@@ -226,6 +292,21 @@ openclaw gateway install --port 18789
 openclaw gateway start
 openclaw gateway status
 ```
+
+### After a major OpenClaw upgrade
+
+```bash
+# Prefer OpenClaw's own updater when available
+openclaw update
+openclaw doctor          # or: openclaw doctor --fix  (reviewed repairs)
+openclaw security audit
+openclaw memory status   # if search is paused, rebuild (see user manual)
+```
+
+**Chat model ≠ memory embeddings.** Grok/xAI (or any chat provider) does not
+automatically provide vector memory. Local embeddings use managed llama.cpp;
+other options include OpenAI/Gemini/Voyage/Ollama-compatible endpoints. See the
+[user manual](docs/user-manual.md#memory-search-embeddings).
 
 Validate host + secrets hygiene:
 

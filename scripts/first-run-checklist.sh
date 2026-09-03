@@ -41,8 +41,11 @@ Gateway:  ${PORT}
 2. Run OpenClaw onboarding (enter secrets only here):
    openclaw onboard --install-daemon
 
-3. Choose model/auth (cloud or local like Ollama), channels, and gateway options.
-   Do not paste tokens into chat, screenshots, or git.
+3. During onboarding, prefer safe defaults:
+   - gateway mode: local / loopback
+   - DM access: pairing (or a strict allowlist), not open
+   - groups: require mention / allowlists
+   - one trusted operator per gateway (not a shared multi-tenant bot)
 
 4. Confirm the gateway service:
    openclaw gateway status
@@ -51,26 +54,53 @@ Gateway:  ${PORT}
    # openclaw gateway install --port ${PORT}
    # openclaw gateway start
 
-5. Validate the host:
+5. Run OpenClaw doctor + security audit:
+   openclaw doctor
+   openclaw security audit
+   # Before Tailscale Serve, LAN bind, reverse proxy, or multi-person DMs:
+   openclaw security audit --deep
+   # After major OpenClaw upgrades, review repairs intentionally:
+   # openclaw doctor --fix
+
+6. Check memory search health (embeddings are separate from chat models):
+   openclaw memory status
+   # If vector search is paused or local embeddings unavailable, see:
+   # docs/user-manual.md#memory-search-embeddings
+   # https://docs.openclaw.ai/concepts/memory-search
+
+7. Validate the host:
    ~/tin-lobster/scripts/validate-tin-lobster.sh --bot-user ${BOT_USER} --port ${PORT}
 
-6. Check secrets hygiene (paths only; no secret values printed):
+8. Check secrets hygiene (paths only; no secret values printed):
    ~/tin-lobster/scripts/secrets-check.sh --bot-user ${BOT_USER}
 
-7. Create and verify first backup (treat archive as sensitive):
-   openclaw backup create
-   openclaw backup verify <backup-file>
+9. Create and verify first backup (treat archive as sensitive):
+   mkdir -p ~/Backups/openclaw
+   openclaw backup create --output ~/Backups/openclaw --verify
+   # Older OpenClaw builds may only support:
+   # openclaw backup create
+   # openclaw backup verify <backup-file>
 
-8. Send a small test message through the chosen channel.
+10. Send a small test message (Control UI or your channel):
+    openclaw dashboard
 
-9. Optional operator extras:
-   ~/tin-lobster/scripts/init-secrets-layout.sh --bot-user ${BOT_USER}
-   # then copy env.example -> env.local only if needed
+11. Optional operator extras:
+    ~/tin-lobster/scripts/init-secrets-layout.sh --bot-user ${BOT_USER}
+    # then copy env.example -> env.local only if needed
 
-10. After SSH key login works from your admin device:
+12. After SSH key login works from your admin device:
     re-run bootstrap with --harden-ssh
     add Tailscale if you need remote access
+    re-run: openclaw security audit --deep
 
 Definition of done:
+  doctor clean enough to run, security audit understood,
+  memory status understood (embeddings optional but checked),
   validate green, secrets-check green, one real message, verified backup.
+
+Official OpenClaw references:
+  https://docs.openclaw.ai/start/getting-started
+  https://docs.openclaw.ai/gateway/security
+  https://docs.openclaw.ai/gateway/security/exposure-runbook
+  https://docs.openclaw.ai/concepts/memory-search
 CHECKLIST

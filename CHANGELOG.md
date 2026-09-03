@@ -9,11 +9,23 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- OpenClaw **2.x / 2026.8** alignment pass for public-ready docs:
+  - README lead-in: what OpenClaw is, why run one, why Tin Lobster exists
+  - user manual: Control UI, doctor/`update`, memory embeddings note (chat ≠ vectors)
+  - admin alignment table + upstream-watch signals for 2.x
+  - first-run checklist includes `memory status`
 - Docs reorganized into calm manuals: design guide, user manual, admin guide
 - SSH platform guides merged into `docs/how-to/ssh.md`
 - Tailscale guide moved to `docs/how-to/remote-access.md`
 - Testing matrix moved to `docs/reference/testing.md`
 - Root `START_HERE.md` is now a short pointer to the user manual
+- Aligned host shell with current OpenClaw install/security/update guidance (2026-08):
+  - bootstrap enforces OpenClaw Node floors (22.22.3+ / 24.15+ / 25.9+ / 26+; refuses Node 23)
+  - OpenClaw npm install uses `--allow-scripts=openclaw` when local npm requires it
+  - user/admin docs teach `openclaw doctor`, `security audit`, pairing/DM defaults,
+    exposure preflight, and `openclaw update` as the day-two path
+  - first-run checklist + SECURITY/design/README updated accordingly
+  - added `docs/reference/upstream-watch.md` so maintainers can track upstream drift
 
 ### Planned
 
@@ -22,6 +34,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
 - Optional release artifact checksums
 - `tinlobster hatch` and public blueprints (post-0.1)
 - Glossary + bootstrap "what just happened?" recap
+- Optional CI/cron helper for upstream-watch Node/engines snapshot
 
 ## [0.1.0-rc.1] - 2026-08-16
 

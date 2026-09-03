@@ -623,19 +623,84 @@ ensure_git_installed() {
   log "git available: $(git --version | head -n1)"
 }
 
+# OpenClaw Node release contract (docs + node-version.mjs as of 2026-08):
+#   supported floors: 22.22.3+, 24.15.0+, 25.9.0+
+#   Node 26+ is recommended/supported as major > 25
+#   Node 23 is explicitly unsupported
+openclaw_node_version_supported() {
+  local raw="${1:-}"
+  local major minor patch
+  raw="${raw#v}"
+  IFS=. read -r major minor patch _ <<EOF
+${raw}
+EOF
+  major="${major:-0}"
+  minor="${minor:-0}"
+  patch="${patch%%[!0-9]*}"
+  patch="${patch:-0}"
+
+  case "$major" in
+    22)
+      [[ "$minor" -gt 22 ]] && return 0
+      [[ "$minor" -eq 22 && "$patch" -ge 3 ]] && return 0
+      return 1
+      ;;
+    23)
+      return 1
+      ;;
+    24)
+      [[ "$minor" -gt 15 ]] && return 0
+      [[ "$minor" -eq 15 && "$patch" -ge 0 ]] && return 0
+      return 1
+      ;;
+    25)
+      [[ "$minor" -gt 9 ]] && return 0
+      [[ "$minor" -eq 9 && "$patch" -ge 0 ]] && return 0
+      return 1
+      ;;
+    *)
+      # OpenClaw treats majors above the highest documented floor as supported.
+      [[ "$major" -gt 25 ]] && return 0
+      return 1
+      ;;
+  esac
+}
+
+npm_supports_allow_scripts_flag() {
+  local ver major minor
+  ver="$(npm --version 2>/dev/null || true)"
+  [[ -n "$ver" ]] || return 1
+  major="${ver%%.*}"
+  minor="${ver#*.}"
+  minor="${minor%%.*}"
+  if [[ "$major" -ge 12 ]]; then
+    return 0
+  fi
+  if [[ "$major" -eq 11 && "$minor" -ge 16 ]]; then
+    return 0
+  fi
+  return 1
+}
+
 install_node_22() {
-  log "Installing Node.js 22 from NodeSource"
+  log "Installing a supported Node.js runtime for OpenClaw (NodeSource 22.x line)"
   if command -v node >/dev/null 2>&1; then
-    local major
-    major="$(node --version | sed 's/^v//' | cut -d. -f1)"
-    if [[ "$major" -ge 22 ]]; then
-      log "Node.js $(node --version) already satisfies requirement"
+    local current
+    current="$(node --version)"
+    if openclaw_node_version_supported "$current"; then
+      log "Node.js ${current} already satisfies OpenClaw requirement"
+      log "OpenClaw currently recommends Node 26 when practical; ${current} remains supported."
+      log "Upgrading npm to latest..."
+      if [[ "$DRY_RUN" != "1" ]]; then
+        npm install -g npm@latest > /tmp/tin-lobster-npm-upgrade.log 2>&1 || log "WARN: npm upgrade failed (non-fatal)"
+      fi
       return 0
     fi
+    warn "Existing Node.js ${current} is outside OpenClaw's supported floors; installing NodeSource 22.x"
   fi
 
   if [[ "$DRY_RUN" == "1" ]]; then
-    log "Would install NodeSource Node.js 22 repository"
+    log "Would install NodeSource Node.js 22 repository and enforce OpenClaw floors"
     return 0
   fi
 
@@ -652,7 +717,14 @@ install_node_22() {
       nodejs > /tmp/tin-lobster-apt.log 2>&1; then
     die "Node.js installation failed. Details in /tmp/tin-lobster-apt.log"
   fi
-  node --version | grep -Eq '^v(22|2[3-9]|[3-9][0-9])\.' || die "Node.js 22+ required; got $(node --version)"
+
+  local installed
+  installed="$(node --version)"
+  if ! openclaw_node_version_supported "$installed"; then
+    die "Node.js ${installed} is not in OpenClaw's supported set (need 22.22.3+, 24.15+, 25.9+, or 26+; Node 23 unsupported)"
+  fi
+  log "Node.js ${installed} OK for OpenClaw (22.22.3+ / 24.15+ / 25.9+ / 26+; 23 unsupported)"
+  log "OpenClaw currently recommends Node 26 when practical; Tin Lobster defaults to the Node 22 LTS line."
   log "Upgrading npm to latest..."
   npm install -g npm@latest > /tmp/tin-lobster-npm-upgrade.log 2>&1 || log "WARN: npm upgrade failed (non-fatal)"
 }
@@ -1268,21 +1340,53 @@ install_openclaw_cli() {
   local npm_global="${home_dir}/.npm-global"
   local workspace_dir="${home_dir}/.openclaw/workspace"
   local bot_path="${npm_global}/bin:${PATH}"
+  local npm_ver install_log
+  local -a npm_install_cmd
 
   log "Installing OpenClaw CLI for ${BOT_USER}"
   if [[ "$DRY_RUN" == "1" ]]; then
-    log "Would install npm package: openclaw@latest"
+    if npm_supports_allow_scripts_flag; then
+      log "Would install: npm install -g openclaw@latest --allow-scripts=openclaw"
+    else
+      log "Would install: npm install -g openclaw@latest"
+    fi
     return 0
   fi
 
-  sudo -u "$BOT_USER" env HOME="$home_dir" NPM_CONFIG_PREFIX="$npm_global" PATH="$bot_path" \
-    npm install -g openclaw@latest
+  # Match current OpenClaw install docs: npm 12 / 11.16+ need an explicit
+  # lifecycle-script allow for openclaw preinstall/postinstall.
+  npm_install_cmd=(npm install -g openclaw@latest)
+  if npm_supports_allow_scripts_flag; then
+    npm_install_cmd+=(--allow-scripts=openclaw)
+    log "npm $(npm --version) supports --allow-scripts; approving openclaw lifecycle scripts only"
+  else
+    npm_ver="$(npm --version 2>/dev/null || echo unknown)"
+    log "npm ${npm_ver}: installing without --allow-scripts (older npm contract)"
+  fi
+
+  install_log="/tmp/tin-lobster-openclaw-npm-install.log"
+  if ! sudo -u "$BOT_USER" env HOME="$home_dir" NPM_CONFIG_PREFIX="$npm_global" PATH="$bot_path" \
+      "${npm_install_cmd[@]}" >"$install_log" 2>&1; then
+    warn "OpenClaw npm install failed; see ${install_log}"
+    if grep -Eqi 'allowScripts|lifecycle|blocked because|EBADENGINE|engine' "$install_log" 2>/dev/null; then
+      die "OpenClaw install blocked (Node engines or npm lifecycle scripts). Check ${install_log} and https://docs.openclaw.ai/install"
+    fi
+    die "OpenClaw npm install failed. Details in ${install_log}"
+  fi
+
+  if grep -Eqi 'blocked because they are not covered by allowScripts|not yet covered by allowScripts' "$install_log" 2>/dev/null; then
+    if ! sudo -u "$BOT_USER" env HOME="$home_dir" NPM_CONFIG_PREFIX="$npm_global" PATH="$bot_path" \
+        openclaw --version >/dev/null 2>&1; then
+      die "OpenClaw lifecycle scripts appear blocked by npm; re-run with npm 11.16+/12 and --allow-scripts=openclaw. See ${install_log}"
+    fi
+    warn "npm reported lifecycle-script policy messages; openclaw binary is present — review ${install_log} if behavior looks odd"
+  fi
 
   if sudo -u "$BOT_USER" env HOME="$home_dir" NPM_CONFIG_PREFIX="$npm_global" PATH="$bot_path" \
       openclaw --version >/tmp/tin-lobster-openclaw-version.txt 2>/dev/null; then
     log "OpenClaw installed: $(tr -d '\r' </tmp/tin-lobster-openclaw-version.txt | head -n1)"
   else
-    warn "OpenClaw installed but version could not be read"
+    die "OpenClaw package installed but openclaw --version failed; see ${install_log}"
   fi
 
   if sudo -u "$BOT_USER" env HOME="$home_dir" NPM_CONFIG_PREFIX="$npm_global" PATH="$bot_path" \
@@ -1363,7 +1467,7 @@ What happened:
 - Hardened Ubuntu host shell for OpenClaw
 - Created bot user and locked-down OpenClaw directories
 - Installed baseline tools including git (for day-two clones/updates)
-- Installed Node.js 22 + OpenClaw CLI
+- Installed supported Node.js (OpenClaw floors) + OpenClaw CLI
 - Copied docs/scripts/templates for day-one operations
 - Did NOT configure model providers, channels, or secrets
 
@@ -1382,17 +1486,24 @@ Definition of done (day one):
    # openclaw gateway install --port ${OPENCLAW_PORT}
    # openclaw gateway start
 
-4. Validate the host:
+4. Run OpenClaw health + security checks:
+   openclaw doctor
+   openclaw security audit
+   # Before remote access or multi-person messaging:
+   # openclaw security audit --deep
+
+5. Validate the host:
    ~/tin-lobster/scripts/validate-tin-lobster.sh --bot-user ${BOT_USER}
 
-5. Check secrets hygiene:
+6. Check secrets hygiene:
    ~/tin-lobster/scripts/secrets-check.sh --bot-user ${BOT_USER}
 
-6. Send one real test message on your channel.
+7. Send one real test message on your channel.
 
-7. Create and verify a backup (treat the file as sensitive):
-   openclaw backup create
-   openclaw backup verify <backup-file>
+8. Create and verify a backup (treat the file as sensitive):
+   mkdir -p ~/Backups/openclaw
+   openclaw backup create --output ~/Backups/openclaw --verify
+   # Fallback: openclaw backup create && openclaw backup verify <backup-file>
 
 Reference files copied to ~${BOT_USER}/tin-lobster/:
    ~/tin-lobster/docs/        — design guide, user manual, admin guide
