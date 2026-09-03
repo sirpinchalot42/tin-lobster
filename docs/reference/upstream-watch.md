@@ -32,7 +32,7 @@ Do **not** wait for a user to hit a bootstrap failure in a workshop.
 
 ## Full pre-release checklist
 
-Run from a clean checkout of Tin Lobster `main` (Gitea primary):
+Run from a clean checkout of Tin Lobster `main`:
 
 1. Read OpenClaw:
    - https://docs.openclaw.ai/
@@ -53,7 +53,7 @@ Run from a clean checkout of Tin Lobster `main` (Gitea primary):
    - `docs/admin-guide.md` update + exposure + alignment table
    - `scripts/first-run-checklist.sh`
    - `README.md` / `SECURITY.md` claims
-4. Open a Gitea issue for any drift (one issue; branch from fresh main).
+4. Open a GitHub issue for any drift (one issue; branch from fresh main).
 5. Smoke on a disposable Ubuntu 24.04 VM when install path changed:
    bootstrap → onboard → `doctor` → `security audit` → dashboard message →
    `memory status` → backup.
@@ -80,11 +80,11 @@ Then open the five OpenClaw URLs above and ask only:
 6. Did **memory/embeddings** defaults or local setup change?
 7. Did **Control UI / dashboard** first-chat path change?
 
-If any answer is yes → Gitea issue → small PR. No drive-by rewrites.
+If any answer is yes → GitHub issue → small PR. No drive-by rewrites.
 
 ## Product rules that reduce thrash
 
-1. **Gitea is source of truth**; GitHub is a clean publish export after Mike approves.
+1. **This public repo is the product surface** contributors should use (issues/PRs here).
 2. Tin Lobster configures the **host**, not OpenClaw channel/model secrets.
 3. Prefer linking official OpenClaw docs over copying long upstream prose.
 4. Teach **OpenClaw’s own** doctor/audit/update tools; host scripts stay complementary.
@@ -98,7 +98,7 @@ Nice-to-haves (not required for v0.1):
 - CI job that fails if bootstrap Node gate drifts from a pinned `engines` snapshot
 - Release script that dumps `npm view openclaw version engines` into the RC notes
 
-Until then, this document + a Gitea issue is enough.
+Until then, this document + a GitHub issue is enough.
 
 ## Related
 

@@ -38,7 +38,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
 
 ## [0.1.0-rc.1] - 2026-08-16
 
-First public release candidate. Clean public history (no private forge history).
+First public release candidate.
 
 ### Added
 

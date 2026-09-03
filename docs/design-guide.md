@@ -112,15 +112,15 @@ It does pin **host expectations** to OpenClaw's published install contract:
 - first-run: `openclaw onboard --install-daemon`
 - day-two: prefer `openclaw update` over ad-hoc `npm update`
 
-When OpenClaw changes that contract, update bootstrap + docs via a small Gitea
-PR — do not let workshop day be the first test.
+When OpenClaw changes that contract, update bootstrap + docs via a small PR —
+do not let workshop day be the first test.
 
 ## What stays out of this repo
 
 - personal bot memory and owner notes
-- homelab hostnames and private forge URLs
+- private hostnames, internal URLs, or lab-only inventory
 - real API keys, tokens, backups
-- club ops / mailing lists
+- private club ops / mailing lists
 
 ## Related
 

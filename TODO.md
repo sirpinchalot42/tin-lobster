@@ -94,7 +94,7 @@ Open work:
 - [x] Move audit files into either a private audit repo or a clearly marked
       `docs/audit/` area if they are safe to share.
 - [ ] Replace removed private files with generic examples or templates.
-- [x] Public GitHub export uses a clean orphan history (private forge history stays private).
+- [x] Public GitHub history is self-contained (no internal maintainer remotes).
 
 ### 5. Docs manuals
 
@@ -130,7 +130,7 @@ Open work:
 - [ ] Test backup/restore end-to-end on a disposable VM.
 - [ ] Run cloud, local LAN, and Tailscale path tests.
 - [x] Secrets scrub of published tree before first public push.
-- [x] Do not publish private forge history; orphan export only.
+- [x] Keep published tree free of internal hosts, tokens, and private ops notes.
 
 ## Principle
 

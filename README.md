@@ -133,9 +133,7 @@ Clone the product, then run the setup wizard. Most people only need this:
 
 ```bash
 # 1) Get Tin Lobster
-# Public GitHub export (when published):
 git clone https://github.com/sirpinchalot42/tin-lobster.git tin-lobster
-# Private Gitea remains the day-to-day source of truth for maintainers.
 cd tin-lobster
 
 # 2) Optional: peek at the script
